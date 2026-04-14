@@ -1,7 +1,3 @@
-"""
-Payslip Extraction FastAPI Application
-Standalone server for payslip extraction (Port: 8005)
-"""
 
 import logging
 import sys

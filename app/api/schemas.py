@@ -1,14 +1,9 @@
-"""
-Payslip API response schemas
-"""
-
 from pydantic import BaseModel
 from typing import Optional, Dict, Any, List
 from datetime import datetime
 
 
 class PayslipData(BaseModel):
-    """Extracted payslip data"""
     name: Optional[str] = None
     id_number: Optional[str] = None
     gross_income: Optional[str] = None
@@ -18,7 +13,6 @@ class PayslipData(BaseModel):
 
 
 class DocumentExtraction(BaseModel):
-    """Single document extraction result"""
     document_number: int
     document_type: str
     extracted_data: Dict[str, Any]
@@ -27,14 +21,12 @@ class DocumentExtraction(BaseModel):
 
 
 class ExtractionSummary(BaseModel):
-    """Summary of extraction results"""
     payslips: int
     other: int
     average_confidence: float
 
 
 class ExtractionResult(BaseModel):
-    """Complete extraction result"""
     upload_id: str
     file_type: str
     total_documents: int
@@ -46,14 +38,12 @@ class ExtractionResult(BaseModel):
 
 
 class UploadResponse(BaseModel):
-    """Response after file upload"""
     status: str
     upload_id: str
     message: str = "File uploaded successfully"
 
 
 class StatusResponse(BaseModel):
-    """Status check response"""
     status: str
     upload_id: str
     message: Optional[str] = None
@@ -63,7 +53,6 @@ class StatusResponse(BaseModel):
 
 
 class ErrorResponse(BaseModel):
-    """Error response"""
     status: str = "error"
     error: str
     details: Optional[str] = None

@@ -1,0 +1,131 @@
+{
+  "info": {
+    "name": "Payslip Extractor API",
+    "description": "Simplified API collection - 2 endpoints only",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Upload Payslip PDF",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": "/path/to/your/payslip.pdf"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8005/api/upload",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8005",
+          "path": [
+            "api",
+            "upload"
+          ]
+        },
+        "description": "Upload a PDF payslip file for extraction. Returns upload_id."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": ""
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:8005/api/upload",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "upload"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"status\": \"processing\",\n  \"upload_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"message\": \"File uploaded successfully. Processing started.\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "2. Get Extraction Results",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8005/api/result/550e8400-e29b-41d4-a716-446655440000",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8005",
+          "path": [
+            "api",
+            "result",
+            "550e8400-e29b-41d4-a716-446655440000"
+          ]
+        },
+        "description": "Get extraction results using the upload_id from the upload response. Replace the upload_id in the URL with your actual upload_id."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8005/api/result/550e8400-e29b-41d4-a716-446655440000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8005",
+              "path": [
+                "api",
+                "result",
+                "550e8400-e29b-41d4-a716-446655440000"
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"upload_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"file_type\": \"pdf\",\n  \"total_documents\": 1,\n  \"documents\": [\n    {\n      \"document_number\": 1,\n      \"document_type\": \"payslip\",\n      \"extracted_data\": {\n        \"name\": \"John Doe\",\n        \"id_number\": \"123456-12-1234\",\n        \"gross_income\": \"5000.00\",\n        \"net_income\": \"4000.00\",\n        \"total_deduction\": \"1000.00\",\n        \"month_year\": \"01/2024\"\n      },\n      \"confidence_score\": 0.95,\n      \"text_length\": 1500\n    }\n  ],\n  \"summary\": {\n    \"payslips\": 1,\n    \"other\": 0,\n    \"average_confidence\": 0.95\n  },\n  \"processing_completed_at\": \"2024-01-15T10:30:00\",\n  \"original_file\": \"raw/550e8400-e29b-41d4-a716-446655440000.pdf\",\n  \"total_text_length\": 1500\n}"
+        }
+      ]
+    }
+  ]
+}

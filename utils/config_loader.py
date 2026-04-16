@@ -90,6 +90,11 @@ class ConfigLoader:
         return engine_config.get("logging", {})
     
     @staticmethod
+    def get_preprocessing_config() -> Dict[str, Any]:
+        ocr_config = ConfigLoader.get_ocr_config()
+        return ocr_config.get("preprocessing", {})
+    
+    @staticmethod
     def reload_all():
         ConfigLoader._configs.clear()
         logger.info("All configs reloaded")

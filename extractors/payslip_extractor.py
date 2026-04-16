@@ -43,7 +43,7 @@ class PayslipExtractor:
         
         extracted["name"] = self.spatial_extractor.extract_name_from_page(page)
         if not extracted["name"]:
-            extracted["name"] = self._extract_field(text, "name")
+            extracted["name"] = self._extract_name_from_text(text)
         
         id_spatial = self.spatial_extractor.extract_field_by_position(page, "No. K/P", "right")
         if not id_spatial:
@@ -210,6 +210,57 @@ class PayslipExtractor:
     def _extract_field(self, text: str, field_name: str) -> Optional[str]:
         field_config = self.payslip_config.get(field_name, {})
         keywords = field_config.get("keywords", [])
+        pattern = field_config.get("pattern")
+        fallback_patterns = field_config.get("fallback_patterns", [])
+        
+        for keyword in keywords:
+            if pattern:
+                match = re.search(rf'{keyword}[:\s]*({pattern})', text, re.IGNORECASE)
+                if match:
+                    result = match.group(1).strip()
+                    if field_name == "month_year":
+                        result = self._format_month_year(result, text)
+                    return result
+            else:
+                match = re.search(rf'{keyword}[:\s]*([^\n]+)', text, re.IGNORECASE)
+                if match:
+                    result = match.group(1).strip()
+                    if field_name == "month_year":
+                        result = self._format_month_year(result, text)
+                    return result
+        
+        for pattern in fallback_patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    result = match.group(1).strip()
+                    if field_name == "month_year":
+                        result = self._format_month_year(result, text)
+                    return result
+                except IndexError:
+                    result = match.group(0).strip()
+                    if field_name == "month_year":
+                        result = self._format_month_year(result, text)
+                    return result
+        
+        return None
+    
+    def _extract_name_from_text(self, text: str) -> Optional[str]:
+        lines = text.split('\n')[:5]
+        
+        for line in lines:
+            line = line.strip()
+            if len(line) < 10 or len(line) > 100:
+                continue
+            
+            name_pattern = r'^([A-Z][a-z]+(?:\s+(?:bin|binti|Bin|Binti)\s+)?[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)'
+            match = re.match(name_pattern, line)
+            if match:
+                name = match.group(1).strip()
+                if 3 <= len(name.split()) <= 6:
+                    return name
+        
+        return None
         pattern = field_config.get("pattern")
         fallback_patterns = field_config.get("fallback_patterns", [])
         

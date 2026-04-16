@@ -20,40 +20,46 @@
         ]
       },
       "gross_income": {
-        "keywords": ["jumlah pendapatan", "gross income", "total income"],
+        "keywords": ["jumlah pendapatan", "junlah pendapatan", "gross income", "total income"],
         "pattern": "[\\d,]+\\.\\d{2}",
         "required": true,
         "fallback_patterns": [
-          "Jumlah\\s+Pendapatan\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
-          "(?:jumlah\\s+pendapatan)\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})"
+          "(?:Jumlah|Junlah)\\s+Pendapatan\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "(?:jumlah|junlah)\\s+pendapatan\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "(?:Surlah|Sumlah)\\s+Pepdapatan\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "Total\\s+Income\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})"
         ],
-        "exclusion_keywords": ["bersih", "potongan", "deduction"]
+        "exclusion_keywords": ["bersih", "potongan", "deduction", "pcrorgan"]
       },
       "net_income": {
-        "keywords": ["gaji bersih", "net income", "net salary"],
+        "keywords": ["gaji bersih", "gaj: bersil", "gaji bersin", "net income", "net salary"],
         "pattern": "[\\d,]+\\.\\d{2}",
         "required": true,
         "fallback_patterns": [
-          "Gaji\\s+Bersih\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
-          "(?:gaji\\s+bersih)\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})"
+          "Gaji[:\\s]+Bersih\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "Gaj:[:\\s]+Bersil\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "(?:gaji|gaj:)\\s+(?:bersih|bersil|bersin)\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})",
+          "Net\\s+(?:Income|Salary)\\s+([\\d\\s,]+[\\.-]\\s*\\d{2})"
         ],
-        "exclusion_keywords": ["gross", "jumlah pendapatan", "potongan"]
+        "exclusion_keywords": ["gross", "jumlah pendapatan", "potongan", "junlah"]
       },
       "total_deduction": {
-        "keywords": ["jumlah potongan", "total deduction"],
+        "keywords": ["jumlah potongan", "junlah potongan", "sulab pcrorgan", "total deduction"],
         "pattern": "[\\d,]+\\.\\d{2}",
         "required": true,
         "fallback_patterns": [
-          "Jumlah\\s+Potongan\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
-          "(?:jumlah\\s+potongan)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})"
+          "(?:Jumlah|Junlah|Sulab)\\s+(?:Potongan|Pcrorgan)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
+          "(?:jumlah|junlah|sulab)\\s+(?:potongan|pcrorgan)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
+          "Total\\s+Deduction\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})"
         ],
         "deduction_item_patterns": [
           "(?:KWSP|EPF)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
           "(?:Perkeso|SOCSO)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
-          "(?:Cukai|Tax)\\s+(?:Pedapatan|Pendapatan)?\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
-          "(?:Takaful|Insurance)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})"
+          "(?:Cukai|Cuxai|Tax)\\s+(?:Pedapatan|Pendapatan|Pepdapacar)?\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
+          "(?:Takaful|Insurance)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})",
+          "(?:PIIN|Perumahan)\\s+([\\d\\s,]+[\\.-]?\\s*\\d{2})"
         ],
-        "exclusion_keywords": ["gross", "jumlah pendapatan", "bersih"]
+        "exclusion_keywords": ["gross", "jumlah pendapatan", "bersih", "junlah", "gaji"]
       },
       "month_year": {
         "keywords": ["m/s", "bulan", "month"],

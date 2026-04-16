@@ -13,6 +13,7 @@ pytesseract==0.3.13
 
 # PDF & Image Processing
 pymupdf==1.27.2.2
+pdfplumber==0.11.9
 numpy==2.4.4
 opencv-python==4.13.0.92
 Pillow==12.0.0

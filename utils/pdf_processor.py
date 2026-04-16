@@ -2,12 +2,14 @@ import logging
 from pathlib import Path
 from typing import List
 import fitz
+from utils.image_preprocessor import ImagePreprocessor
+from utils.config_loader import ConfigLoader
 
 logger = logging.getLogger(__name__)
 
 class PDFProcessor:
     @staticmethod
-    def pdf_to_images(pdf_path: str, output_dir: str, dpi: int = 300) -> List[str]:
+    def pdf_to_images(pdf_path: str, output_dir: str, dpi: int = 300, preprocess: bool = True) -> List[str]:
         try:
             output_path = Path(output_dir)
             output_path.mkdir(parents=True, exist_ok=True)
@@ -20,8 +22,15 @@ class PDFProcessor:
                 pix = page.get_pixmap(matrix=fitz.Matrix(dpi/72, dpi/72))
                 image_path = output_path / f"page_{page_num + 1}.png"
                 pix.save(str(image_path))
-                image_paths.append(str(image_path))
                 logger.info(f"Converted page {page_num + 1} to {image_path}")
+                
+                if preprocess:
+                    preprocessing_config = ConfigLoader.get_preprocessing_config()
+                    preprocessor = ImagePreprocessor(preprocessing_config)
+                    processed_path = preprocessor.preprocess(str(image_path))
+                    image_paths.append(processed_path)
+                else:
+                    image_paths.append(str(image_path))
             
             doc.close()
             return image_paths
